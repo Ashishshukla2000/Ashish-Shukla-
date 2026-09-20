@@ -170,6 +170,17 @@ export function exportFullBackup(): string {
   return JSON.stringify(payload, null, 2);
 }
 
+export function resetToRoutineDefaults(): void {
+  try {
+    localStorage.removeItem(METRICS_STORAGE_KEY);
+    localStorage.removeItem(TRACKING_DATA_KEY);
+    localStorage.removeItem(TODOS_STORAGE_KEY);
+    localStorage.removeItem(DIARY_STORAGE_KEY);
+  } catch (e) {
+    console.error('Failed to reset data', e);
+  }
+}
+
 export function importFullBackup(jsonStr: string): boolean {
   try {
     const parsed = JSON.parse(jsonStr);

@@ -14,7 +14,7 @@ import {
   X
 } from 'lucide-react';
 import { ThemePalette } from '../types';
-import { exportFullBackup, importFullBackup } from '../utils/storage';
+import { exportFullBackup, importFullBackup, resetToRoutineDefaults } from '../utils/storage';
 
 interface HeaderBarProps {
   isDark: boolean;
@@ -60,6 +60,16 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
     a.download = `lumina-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleResetToDefaults = () => {
+    const confirmed = window.confirm(
+      'This will replace your current trackers, todos, and diary entries with the default routine (Sleep, Surya Jal, Self Training, Portfolio Work, Shoot/Editing, Discipline, and the full meal schedule). This cannot be undone unless you have a backup. Continue?'
+    );
+    if (!confirmed) return;
+    resetToRoutineDefaults();
+    setShowBackupModal(false);
+    onDataImported();
   };
 
   const handleImportSubmit = () => {
@@ -320,6 +330,23 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 className="w-full py-2.5 rounded-xl font-semibold text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
               >
                 <Upload className="w-4 h-4" /> Import Backup Now
+              </button>
+            </div>
+
+            <div className="space-y-3 pt-3 border-t border-white/10">
+              <h4 className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
+                Reset
+              </h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Wipe saved trackers, todos, and diary entries, and reload the default daily routine
+                (Sleep, Surya Jal, Self Training, Portfolio Work, Shoot/Editing, Discipline, meals).
+              </p>
+              <button
+                type="button"
+                onClick={handleResetToDefaults}
+                className="w-full py-2.5 rounded-xl font-semibold text-xs bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 transition-all flex items-center justify-center gap-2"
+              >
+                <X className="w-4 h-4" /> Reset to Default Routine
               </button>
             </div>
           </div>
