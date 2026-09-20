@@ -257,6 +257,44 @@
     gap:8px;
     margin:10px 0 4px;
   }
+  .schedule-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 14px;
+    margin-bottom:6px;
+  }
+  .schedule-toggle{
+    width:100%;
+    background:none;
+    border:none;
+    color:var(--accent);
+    font-size:13px;
+    font-weight:600;
+    padding:4px 0;
+    cursor:pointer;
+    text-align:left;
+  }
+  .schedule-list{
+    margin-top:8px;
+  }
+  .schedule-row{
+    display:flex;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px solid var(--border);
+    font-size:13px;
+  }
+  .schedule-row .time{
+    flex:0 0 130px;
+    color:var(--accent2);
+    font-weight:600;
+    font-size:12px;
+  }
+  .schedule-row .label{
+    flex:1;
+    color:var(--text);
+  }
   .toolbar button{
     flex:1;
     background:var(--card2);
@@ -291,6 +329,12 @@
       <small id="curDateSub"></small>
     </div>
     <button onclick="changeDay(1)" id="nextBtn">Next ›</button>
+  </div>
+
+  <div class="section-title">My Daily Schedule</div>
+  <div class="schedule-card" id="scheduleCard">
+    <button class="schedule-toggle" onclick="toggleSchedule()">Show / Hide schedule ▾</button>
+    <div id="scheduleList" class="schedule-list" style="display:none;"></div>
   </div>
 
   <div class="section-title">Today's Routine</div>
@@ -357,8 +401,45 @@ function saveStore(){
 
 let store = loadStore();
 
-const DEFAULT_PRESETS = ["Warmup", "Workout", "Drink Water", "Protein Meal", "10k Steps", "Sleep 7-8 hrs"];
+const DEFAULT_PRESETS = [
+  "Sleep by 11:30pm",
+  "Wake up fresh 5:40am",
+  "Surya Jal 5:45am",
+  "Prepare morning meal 6am",
+  "Banashake 6:30am",
+  "Self training 7-8:30am",
+  "Post-workout meal 9am",
+  "Morning meal 10am",
+  "Lunch 2:30pm",
+  "Portfolio work",
+  "Snacks 7pm",
+  "Shoot editing 8-10:30pm",
+  "Dinner 11pm",
+  "Upload",
+  "No masturbation",
+  "No drugs"
+];
 if(!store.presets) store.presets = DEFAULT_PRESETS.slice();
+
+// ---------- Reference schedule (read-only) ----------
+const SCHEDULE = [
+  { time: "11:30pm - 5:00am", label: "Sleep (6 hrs — best)" },
+  { time: "5:00am - 5:40am", label: "Wake up & get fresh" },
+  { time: "5:45am", label: "Surya Jal" },
+  { time: "6:00am", label: "Prepare early morning meal" },
+  { time: "6:30am", label: "Eat: Banashake" },
+  { time: "7:00am - 8:30am", label: "Self training (workout)" },
+  { time: "9:00am", label: "Post-workout: sattu, chana, milk, roti, banana, rice water" },
+  { time: "10:00am", label: "Meal: rice, roti, salad, banana, fruit juice" },
+  { time: "11:30am - 2:00pm", label: "Portfolio work" },
+  { time: "2:30pm", label: "Lunch: rice, daal, salad, curd, banana" },
+  { time: "7:00pm", label: "Snacks: maggi, bread, buna chana, dry fruits, idli" },
+  { time: "8:00pm - 10:30pm", label: "Body transformation shoot / editing" },
+  { time: "11:00pm", label: "Dinner: banana, milk + anything" },
+  { time: "Late night", label: "Roti, bread (if needed)" },
+  { time: "Free time", label: "Upload" },
+  { time: "Always", label: "No masturbation, no drugs" }
+];
 
 // ---------- Date handling ----------
 function fmtKey(d){
@@ -600,7 +681,23 @@ function importData(event){
   event.target.value = '';
 }
 
+// ---------- Schedule ----------
+function renderSchedule(){
+  const el = document.getElementById('scheduleList');
+  el.innerHTML = SCHEDULE.map(s => `
+    <div class="schedule-row">
+      <div class="time">${escapeHtml(s.time)}</div>
+      <div class="label">${escapeHtml(s.label)}</div>
+    </div>
+  `).join('');
+}
+function toggleSchedule(){
+  const el = document.getElementById('scheduleList');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
 // ---------- Init ----------
+renderSchedule();
 render();
 </script>
 
