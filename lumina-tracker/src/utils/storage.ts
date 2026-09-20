@@ -57,13 +57,13 @@ export function loadAllTracking(): Record<string, DayTrackingData> {
       const today = getTodayDateString();
       return {
         [today]: {
-          water: 5,
-          workout: 30,
-          focus_time: 4,
-          mindfulness: 10,
-          reading: 15,
-          sleep_quality: 4,
-          no_sugar: true,
+          sleep: 4,
+          surya_jal: false,
+          self_training: 0,
+          water: 0,
+          portfolio_work: 0,
+          shoot_editing: 0,
+          discipline: true,
         }
       };
     }
