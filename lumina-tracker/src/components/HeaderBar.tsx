@@ -101,7 +101,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h1 className="text-lg font-extrabold tracking-tight">Lumina</h1>
+                  <h1 className="text-lg font-extrabold tracking-tight">Shukla's</h1>
                   <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
                     3D Glass
                   </span>

@@ -1,5 +1,5 @@
 {
-  "name": "Lumina Daily Tracker & Diary",
+  "name": "Shukla's Daily Tracker & Diary",
   "description": "Customizable self daily tracking, interactive todo lists, and personal diary in a modern 3D glossy glass interface with dark mode.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
