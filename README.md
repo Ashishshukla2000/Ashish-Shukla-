@@ -1,14 +1,34 @@
 # Ashish-Shukla-
 Graphic design
 
-## Transformation Tracker
+## Lumina Transformation Tracker (current app)
 
-A personal, fully offline daily routine / body transformation tracker.
+A personal, fully offline daily habit tracker, todo list, and diary with a modern
+3D glossy glass interface.
 
-- Open `index.html` directly in any browser (no internet, no install, no server needed).
-- Add your daily routine tasks (workout, water, sleep, meals, etc.) and check them off each day.
-- Track body metrics (weight, water, sleep, calories) and journal notes per day.
-- See your streak, total days logged, and a 28-day history at a glance.
+- **Just want to use it?** Open `index.html` (repo root) directly in any browser —
+  no internet, no install, no server needed. It's a single self-contained file.
+- Track custom daily habits/metrics (water, workout, sleep, etc.) with progress bars.
+- Manage a daily todo list, write diary entries, and see day-by-day insights.
 - All data is saved locally in the browser (`localStorage`) — nothing leaves your device.
-- Use "Export Backup" / "Import Backup" to save your data to a file or move it to another device/browser.
-- The app is a single file (`index.html`), so it's easy to keep customizing later — add more presets, fields, or stats as your routine evolves.
+- Works the same on desktop and mobile browsers — just open the file.
+
+### Editing / customizing it further
+
+The full editable source code lives in [`lumina-tracker/`](./lumina-tracker) (React +
+Vite + Tailwind). To make changes and rebuild the single offline file:
+
+```
+cd lumina-tracker
+bun install      # or: npm install
+bun run build    # or: npm run build
+```
+
+This produces `lumina-tracker/dist/index.html` — a single self-contained file with
+everything inlined (no separate JS/CSS files), so it still works fully offline when
+opened directly. Copy it over the root `index.html` to update the live app.
+
+### Older tracker
+
+An earlier, simpler offline tracker (plain HTML/CSS/JS) is kept at
+[`simple-tracker-offline.html`](./simple-tracker-offline.html) for reference.
