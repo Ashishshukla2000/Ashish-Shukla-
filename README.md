@@ -14,7 +14,7 @@ Open `coach/index.html` in a phone or laptop browser.
 
 Targets use the Mifflin-St Jeor formula: fat loss is about −450 kcal, muscle gain +250 kcal, protein 1.8–2 g per kg.
 
-## Schedule agent (Workout tab)
+## Schedule agent (🎤 Agent button, on every screen)
 
 Type or speak a command to move workout days or change the time. It is rule-based, so there is no AI cost. Examples:
 

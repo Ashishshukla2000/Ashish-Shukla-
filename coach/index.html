@@ -26,7 +26,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
-.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:12px 96px}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:12px 150px}
 h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:.01em;margin:0;text-wrap:balance;line-height:1.1}
 h2{font-size:22px;text-transform:uppercase}
 h3{font-size:17px;text-transform:uppercase;letter-spacing:.04em}
@@ -83,6 +83,7 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);border-top-color:var(-
 .chart svg{width:100%;height:auto;display:block}
 .chart text{fill:var(--muted);font-size:11px;font-family:var(--body)}
 pre.out{white-space:pre-wrap;background:var(--sunk);padding:12px;border-radius:4px;margin:0;font-family:var(--body);font-size:14px}
+#fab{position:fixed;right:16px;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--accent);color:var(--accent-ink);border:0;border-radius:99px;padding:12px 18px;font-family:var(--display);font-size:18px;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 .chat{display:grid;gap:6px}
 .msg{padding:8px 12px;border-radius:8px;max-width:88%;font-size:14px}
 .msg.bot{background:var(--sunk);justify-self:start}
@@ -106,6 +107,7 @@ pre.out{white-space:pre-wrap;background:var(--sunk);padding:12px;border-radius:4
   <main id="view"></main>
 </div>
 
+<button id="fab" data-tab="agent">🎤 Agent</button>
 <nav class="tabs" role="tablist">
   <button role="tab" data-tab="today">Today</button>
   <button role="tab" data-tab="workout">Workout</button>
@@ -428,6 +430,10 @@ function todayView(){
     <div class="label">Line of the day</div>
     <div class="quote">“${esc(lineFor(n))}”</div>
   </div>
+  <div class="card row" style="justify-content:space-between">
+    <div><div class="label">Aaj ka workout</div><strong>${esc(plan.name)}</strong>${typeOf(viewKey)!=='rest'?` · ${fmtTime(timeOf(viewKey))}`:''}</div>
+    <button class="primary small" data-go="agent">🎤 Shift karo</button>
+  </div>
   <div class="grid4">
     <div class="stat"><span class="label">Calories</span><span class="v">${r0(tot.kcal)}</span><span class="muted" style="font-size:12px">of ${t.kcal}</span><div class="bar"><i style="width:${pct(tot.kcal,t.kcal)}%"></i></div></div>
     <div class="stat"><span class="label">Protein</span><span class="v">${r0(tot.p)}g</span><span class="muted" style="font-size:12px">of ${t.protein} g</span><div class="bar"><i style="width:${pct(tot.p,t.protein)}%"></i></div></div>
@@ -455,23 +461,33 @@ function todayView(){
   </section>`;
 }
 
-function workoutView(){
-  const d = day(), plan = planFor(viewKey);
-  const week = Array.from({length:7},(_,i) => { const k = addDays(todayKey(),i), o = sched().over[k] || {};
+function weekTable(){
+  const rows = Array.from({length:7},(_,i) => { const k = addDays(todayKey(),i), o = sched().over[k] || {};
     return `<tr><td>${esc(fmtDay(k))}</td><td>${esc(PLAN[typeOf(k)].name)}</td><td>${typeOf(k)==='rest'?'–':fmtTime(timeOf(k))}</td><td>${o.type||o.time?'<span class="pill warn">Changed</span>':''}</td></tr>`; }).join('');
-  const chat = (S.chat && S.chat.length ? S.chat : [{who:'bot',text:'Namaste! Main aapka schedule agent hoon. Bolo ya likho, jaise "aaj gym nahi ja paunga" ya "kal shaam 7 baje". Main workout day aur time shift kar dunga.'}]).slice(-4);
+  return `<div class="card"><h3>Next 7 days</h3><div class="scroll"><table><tbody>${rows}</tbody></table></div></div>`;
+}
+function agentView(){
+  const chat = (S.chat && S.chat.length ? S.chat : [{who:'bot',text:'Namaste! Main aapka schedule agent hoon. Bolo ya likho, jaise "aaj gym nahi ja paunga" ya "kal shaam 7 baje". Main workout day aur time shift kar dunga.'}]).slice(-6);
   const chips = ['Aaj gym nahi ja paunga','Kal shaam 7 baje','Har din subah 6 baje','Monday ka workout Tuesday ko shift karo','Sunday ko legs','Undo'];
   return `<section>
   <div class="card coach">
-    <div class="row" style="justify-content:space-between"><h3>Schedule agent</h3><span class="pill">Free · no AI cost</span></div>
+    <div class="row" style="justify-content:space-between"><h2>Schedule agent</h2><span class="pill">Free · no AI cost</span></div>
     <div class="chat" aria-live="polite">${chat.map(m => `<div class="msg ${m.who}">${esc(m.text)}</div>`).join('')}</div>
     <form id="agentForm" class="row">
       <input id="agentIn" placeholder="Bolo ya likho: aaj gym nahi ja paunga" autocomplete="off" style="flex:1 1 200px">
       <button type="button" id="micBtn" aria-label="Speak command">🎤 Bolo</button>
       <button class="primary" type="submit">Send</button>
     </form>
+    <div class="label">Tap karke try karo</div>
     <div class="row">${chips.map(c => `<button type="button" class="small" data-say="${esc(c)}">${esc(c)}</button>`).join('')}</div>
   </div>
+  ${weekTable()}
+  </section>`;
+}
+
+function workoutView(){
+  const d = day(), plan = planFor(viewKey);
+  return `<section>
   <div class="card">
     <div class="row" style="justify-content:space-between"><h2>${esc(plan.name)}</h2>${d.workoutDone?'<span class="pill good">Done</span>':'<span class="pill warn">Pending</span>'}</div>
     ${typeOf(viewKey)!=='rest'?`<div class="row" style="font-size:14px"><span class="pill">${esc(fmtDay(viewKey))} · ${fmtTime(timeOf(viewKey))}</span><a href="${esc(calLink(viewKey))}" target="_blank" rel="noopener" style="color:var(--plate)">Google Calendar reminder lagao</a></div>`:''}
@@ -488,11 +504,10 @@ function workoutView(){
     }).join('')}</div>
     <button class="primary" id="wDone">${d.workoutDone?'Mark as not done':'Workout complete ✓'}</button>
   </div>
-  <div class="card">
-    <h3>Next 7 days</h3>
-    <div class="scroll"><table><tbody>${week}</tbody></table></div>
-    <p class="muted" style="margin:0;font-size:13px">Beginner rule: form pehle, weight baad mein. Last 1–2 reps tough hone chahiye, par form nahi tootna chahiye.</p>
-  </div></section>`;
+  <p class="muted" style="margin:0;font-size:13px">Beginner rule: form pehle, weight baad mein. Last 1–2 reps tough hone chahiye, par form nahi tootna chahiye.</p>
+  ${weekTable()}
+  <button class="primary" data-go="agent">🎤 Day ya time badlo (Agent)</button>
+  </section>`;
 }
 
 function foodView(){
@@ -635,8 +650,9 @@ Subscribe karo aur journey mein saath chalo. Roz naya video.
 function render(){
   header();
   const v = $('#view');
-  if (!S.profile || tab === 'setup') { v.innerHTML = setupView(); bindSetup(); return; }
-  v.innerHTML = ({today:todayView, workout:workoutView, food:foodView, progress:progressView, journey:journeyView}[tab])();
+  $('#fab').hidden = tab === 'agent';
+  if (tab !== 'agent' && (!S.profile || tab === 'setup')) { v.innerHTML = setupView(); bindSetup(); return; }
+  v.innerHTML = ({today:todayView, workout:workoutView, food:foodView, progress:progressView, journey:journeyView, agent:agentView}[tab])();
   bind();
 }
 function bindSetup(){
@@ -713,7 +729,8 @@ function copyText(txt, el){
   const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); if (el.select) el.select(); else { const s = getSelection(); s.removeAllRanges(); s.addRange(r); } toast('Selected. Ab copy karo.'); };
   try { navigator.clipboard.writeText(txt).then(() => toast('Copied'), fallback); } catch(e) { fallback(); }
 }
-document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.tab; render(); scrollTo(0,0); });
+document.querySelectorAll('nav.tabs button, #fab').forEach(b => b.onclick = () => { tab = b.dataset.tab; render(); scrollTo(0,0); });
+document.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { tab = g.dataset.go; render(); scrollTo(0,0); } });
 try { const h = location.hash.slice(1); if (['today','workout','food','progress','journey'].includes(h)) tab = h; } catch(e) {}
 render();
 </script>
