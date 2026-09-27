@@ -1,0 +1,549 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ashish Transformation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Hind:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F0; --surface:#FFFFFF; --sunk:#E2E7E5; --ink:#18221F; --muted:#5A6964; --line:#CFD7D4;
+  --accent:#D9531E; --accent-ink:#FFFFFF; --plate:#2458A8;
+  --good:#1E8150; --warn:#B7791F; --bad:#C0392B;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Hind",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121816; --surface:#1B2320; --sunk:#232D29; --ink:#E8EEEB; --muted:#9AA9A3; --line:#2F3B37;
+    --accent:#F0703A; --accent-ink:#1A0D06; --plate:#6F9BE8;
+    --good:#4CC486; --warn:#E3B04B; --bad:#F07366; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121816; --surface:#1B2320; --sunk:#232D29; --ink:#E8EEEB; --muted:#9AA9A3; --line:#2F3B37;
+  --accent:#F0703A; --accent-ink:#1A0D06; --plate:#6F9BE8;
+  --good:#4CC486; --warn:#E3B04B; --bad:#F07366; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:12px 96px}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:.01em;margin:0;text-wrap:balance;line-height:1.1}
+h2{font-size:22px;text-transform:uppercase}
+h3{font-size:17px;text-transform:uppercase;letter-spacing:.04em}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.num{font-family:var(--display);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-block:8px 16px;border-bottom:3px solid var(--ink);margin-bottom:16px}
+.day{font-family:var(--display);font-size:56px;font-weight:700;line-height:.9;letter-spacing:-.01em}
+.day small{font-size:20px;color:var(--muted);font-weight:600;margin-left:4px}
+.phase{display:inline-block;background:var(--plate);color:#fff;font-family:var(--display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;font-size:14px}
+section{display:grid;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{background:var(--sunk);border-radius:4px;padding:10px;display:grid;gap:2px}
+.stat .v{font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.bar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.coach{border-left:5px solid var(--accent)}
+.coach ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.quote{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.15}
+label.f{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:500}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 10px;width:100%;min-width:0}
+textarea{min-height:90px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--plate);outline-offset:2px}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 12px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.small{padding:4px 10px;font-size:13px}
+.checks{display:grid;gap:6px}
+.check{display:flex;gap:10px;align-items:center;padding:8px 10px;background:var(--sunk);border-radius:4px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--good);flex:none}
+.check.done span{text-decoration:line-through;color:var(--muted)}
+.ex{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding-block:10px;border-top:1px solid var(--line)}
+.ex:first-of-type{border-top:0}
+.ex .name{font-weight:600}
+.sets{display:flex;gap:6px;flex-wrap:wrap}
+.set{width:34px;height:34px;padding:0;border-radius:50%;font-family:var(--display);font-size:15px}
+.set.on{background:var(--good);color:#fff;border-color:var(--good)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--sunk);color:var(--muted)}
+.pill.good{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-size:14px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.scroll{overflow-x:auto}
+.meal{display:flex;justify-content:space-between;gap:10px;align-items:center;padding-block:6px;border-top:1px solid var(--line)}
+.meal:first-child{border-top:0}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs button{border:0;border-radius:0;background:none;padding:10px 4px;font-family:var(--display);font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-top:3px solid transparent}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-top-color:var(--accent)}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:11px;font-family:var(--body)}
+pre.out{white-space:pre-wrap;background:var(--sunk);padding:12px;border-radius:4px;margin:0;font-family:var(--body);font-size:14px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:4px;font-weight:600;z-index:9}
+.sample{background:color-mix(in srgb,var(--warn) 18%,var(--surface));border:1px dashed var(--warn);padding:8px 12px;border-radius:4px;font-size:14px}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s ease}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="label" id="hello">Body transformation</div>
+      <div class="day" id="dayNum">Day 1<small>/ 90</small></div>
+    </div>
+    <div style="text-align:right;display:grid;gap:6px;justify-items:end">
+      <span class="phase" id="phase">Foundation</span>
+      <span class="muted" id="dateLbl" style="font-size:13px"></span>
+    </div>
+  </header>
+  <main id="view"></main>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-tab="today">Today</button>
+  <button role="tab" data-tab="workout">Workout</button>
+  <button role="tab" data-tab="food">Food</button>
+  <button role="tab" data-tab="progress">Progress</button>
+  <button role="tab" data-tab="journey">Journey</button>
+</nav>
+
+<script>
+/* ============ Free rule-based coach. No AI, no internet needed after load. Data stays on this device. ============ */
+const KEY = 'atc-v1';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseKey = k => { const [y,m,d] = k.split('-').map(Number); return new Date(y, m-1, d); };
+const todayKey = () => keyOf(new Date());
+const daysBetween = (a,b) => Math.round((parseKey(b) - parseKey(a)) / 864e5);
+const r0 = n => Math.round(n);
+
+let S = load();
+let tab = 'today';
+let viewKey = todayKey();
+
+function load(){
+  try { const raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch(e) {}
+  return { profile:null, days:{} };
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+function day(k = viewKey){
+  if (!S.days[k]) S.days[k] = { weight:'', water:0, steps:'', sleep:'', meals:[], sets:{}, checks:{}, note:'', workoutDone:false };
+  return S.days[k];
+}
+function toast(msg){
+  const t = document.createElement('div'); t.className='toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 1800);
+}
+
+/* ---------- Targets (Mifflin-St Jeor) ---------- */
+function targets(){
+  const p = S.profile; if (!p) return null;
+  const w = latestWeight() || +p.weight;
+  const bmr = 10*w + 6.25*(+p.height) - 5*(+p.age) + (p.sex === 'female' ? -161 : 5);
+  const tdee = bmr * ({low:1.375, mid:1.55, high:1.725}[p.activity] || 1.55);
+  const adj = {fatloss:-450, muscle:250, recomp:-150}[p.goal] ?? 0;
+  const protPerKg = p.goal === 'fatloss' ? 2.0 : 1.8;
+  return { kcal: r0((tdee + adj)/10)*10, protein: r0(w*protPerKg), water: Math.max(3, Math.round(w*0.04*2)/2), steps: p.goal === 'fatloss' ? 10000 : 8000, sleep: 7.5, tdee: r0(tdee) };
+}
+function latestWeight(){
+  const ks = Object.keys(S.days).filter(k => +S.days[k].weight > 0).sort();
+  return ks.length ? +S.days[ks[ks.length-1]].weight : null;
+}
+function dayNumber(k = viewKey){ return S.profile ? daysBetween(S.profile.startDate, k) + 1 : 1; }
+function phaseOf(n){ return n <= 30 ? 'Foundation' : n <= 60 ? 'Build' : n <= 90 ? 'Transform' : 'Level up'; }
+
+/* ---------- Workout plan: Push / Pull / Legs, Sunday active rest ---------- */
+const WARMUP = ['5 min treadmill / skipping (light sweat)','Arm circles + shoulder rotations — 20 each','Band pull-aparts or light face pulls — 15','Bodyweight squats — 15, hip openers — 10 each side','1–2 light warm-up sets of the first exercise'];
+const PLAN = {
+  push:{name:'Push — Chest, Shoulders, Triceps', ex:[['Barbell Bench Press',4,'6–10'],['Incline Dumbbell Press',3,'8–12'],['Seated DB Shoulder Press',3,'8–12'],['Lateral Raise',3,'12–15'],['Cable Tricep Pushdown',3,'10–12'],['Overhead Tricep Extension',2,'12–15']]},
+  pull:{name:'Pull — Back, Biceps', ex:[['Lat Pulldown',4,'8–12'],['Seated Cable Row',3,'8–12'],['One-arm Dumbbell Row',3,'10 each'],['Face Pull',3,'15'],['Barbell Curl',3,'8–12'],['Hammer Curl',2,'12']]},
+  legs:{name:'Legs + Core', ex:[['Barbell Squat',4,'6–10'],['Romanian Deadlift',3,'8–10'],['Leg Press',3,'10–12'],['Lying Leg Curl',3,'12'],['Standing Calf Raise',4,'12–15'],['Plank',3,'40 sec']]},
+  rest:{name:'Active Rest', ex:[['Brisk walk',1,'30–45 min'],['Full body stretching',1,'10 min'],['Foam roll / mobility',1,'10 min']]}
+};
+const WEEK = ['rest','push','pull','legs','push','pull','legs']; // Sun..Sat
+const planFor = k => PLAN[WEEK[parseKey(k).getDay()]];
+
+/* ---------- Indian food list (per serving, approx.) ---------- */
+const FOODS = [
+  ['Roti / chapati (1)',100,3],['Rice, cooked (1 katori ~150 g)',195,4],['Dal (1 katori)',150,9],['Rajma / chole (1 katori)',210,10],
+  ['Paneer (100 g)',265,18],['Whole egg (1)',72,6],['Egg white (1)',17,3.6],['Chicken breast, cooked (100 g)',165,31],
+  ['Fish, cooked (100 g)',200,22],['Soya chunks, dry (50 g)',173,26],['Whey protein (1 scoop)',120,24],['Toned milk (250 ml)',150,8],
+  ['Curd / dahi (1 katori)',100,6],['Greek yogurt (100 g)',60,10],['Sprouts (1 katori)',100,7],['Peanuts (30 g)',170,7],
+  ['Peanut butter (1 tbsp)',95,4],['Oats, dry (50 g)',190,6.5],['Poha (1 plate)',250,5],['Upma (1 plate)',250,6],
+  ['Idli (2) + sambar',220,7],['Dosa (1) + chutney',250,5],['Sabzi (1 katori)',120,3],['Salad (1 bowl)',50,2],
+  ['Banana (1)',105,1.3],['Apple (1)',95,0.5],['Tofu (100 g)',145,15],['Bread slice (1)',75,2.5],['Chai with sugar (1 cup)',90,3],['Samosa (1)',260,4]
+];
+
+/* ---------- Motivation lines (Hinglish) ---------- */
+const LINES = [
+  'Aaj ka pasina, kal ki pehchaan.','Motivation aata-jaata hai, discipline roz aata hai.','Main kal se nahi, aaj se badal raha hoon.',
+  'Body gym mein banti hai, kitchen mein dikhti hai.','Chhote steps, roz. Yahi secret hai.','Log hansenge. Result unhe chup karayega.',
+  'Ek rep aur. Wahi rep tumhe badalta hai.','Comparison kal wale khud se, kisi aur se nahi.','Thak gaya hoon, par ruka nahi hoon.',
+  'Mirror jhooth nahi bolta. Consistency bhi nahi.','Excuse ya result — dono ek saath nahi milte.','Jo aaj mushkil hai, 90 din baad aadat hogi.',
+  'Mera competition sirf kal wala Ashish hai.','Slow progress bhi progress hai.','Sapne bade, plate clean, sleep poori.'
+];
+const lineFor = n => LINES[(Math.max(1,n)-1) % LINES.length];
+
+/* ---------- Totals & streak ---------- */
+function totals(d){ return d.meals.reduce((a,m) => ({kcal:a.kcal + m.kcal*m.qty, p:a.p + m.p*m.qty}), {kcal:0,p:0}); }
+function isWin(k){
+  const d = S.days[k]; if (!d) return false;
+  return d.workoutDone || (WEEK[parseKey(k).getDay()] === 'rest' && (+d.steps >= 6000 || d.checks.rest));
+}
+function streak(){
+  let n = 0; const d = new Date();
+  if (!isWin(keyOf(d))) d.setDate(d.getDate()-1);
+  while (isWin(keyOf(d))) { n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function avgWeight(fromKey, days){
+  const vals = [];
+  for (let i=0;i<days;i++){ const d = parseKey(fromKey); d.setDate(d.getDate()-i); const w = +(S.days[keyOf(d)]?.weight); if (w>0) vals.push(w); }
+  return vals.length >= 2 ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+}
+
+/* ---------- The coach: plain rules, zero tokens ---------- */
+function coachTips(){
+  const t = targets(), d = day(), tot = totals(d), tips = [], p = S.profile;
+  const plan = planFor(viewKey);
+  if (!d.weight) tips.push(['warn','Subah khali pet, toilet ke baad weight log karo. Roz same time.']);
+  if (!d.workoutDone) tips.push(plan === PLAN.rest ? ['', 'Aaj rest day hai: 8k+ steps aur stretching. Body recover hogi tabhi grow karegi.'] : ['warn',`Aaj ${plan.name}. Pehle 10 min warm-up, fir main lifts. Warm-up clip video ke liye record kar lo.`]);
+  const pLeft = t.protein - tot.p;
+  if (pLeft > 5) {
+    const ideas = [];
+    let left = pLeft;
+    const main = {veg:['Soya chunks 50 g',26], egg:['4 egg whites + 2 whole eggs',26], nonveg:['Chicken breast 100 g',31]}[p.diet];
+    for (const [n,,pr] of [['1 scoop whey',0,24],[main[0],0,main[1]],['Paneer 100 g',0,18],['Greek yogurt 100 g',0,10]]) {
+      if (left <= 0) break; ideas.push(n); left -= pr;
+    }
+    tips.push(['warn',`Protein ${r0(pLeft)} g baaki hai. Idea: ${ideas.join(' + ')}.`]);
+  } else if (d.meals.length) tips.push(['good','Protein target done. Muscle ko raw material mil gaya.']);
+  if (d.meals.length && tot.kcal > t.kcal + 150) tips.push(['bad',`Calories target se ${r0(tot.kcal - t.kcal)} zyada. Raat ko light: salad + dal/paneer, no fried.`]);
+  if (d.water < t.water) tips.push(['',`Paani ${d.water} / ${t.water} L. Har meal se pehle 1 glass.`]);
+  if (d.sleep && +d.sleep < 7) tips.push(['bad',`Sirf ${d.sleep} ghante sleep. Kam neend = zyada bhookh, kam strength. Aaj phone 11 baje band.`]);
+  // weekly trend
+  const now = avgWeight(viewKey,7), prevK = keyOf(new Date(parseKey(viewKey).getTime() - 7*864e5)), prev = avgWeight(prevK,7);
+  if (now && prev) {
+    const ch = now - prev, pct = ch/prev*100;
+    if (p.goal === 'fatloss') {
+      if (pct < -1) tips.push(['warn',`Weight ${Math.abs(ch).toFixed(1)} kg/week gir raha hai — bahut fast. 150–200 kcal badhao, muscle bachao.`]);
+      else if (ch > -0.1) tips.push(['warn','Weekly average nahi gir raha. 150 kcal kam karo ya roz 2000 steps extra.']);
+      else tips.push(['good',`Is hafte −${Math.abs(ch).toFixed(1)} kg average. Perfect speed, isi pe chalo.`]);
+    } else if (p.goal === 'muscle') {
+      if (ch < 0.1) tips.push(['warn','Weight badh nahi raha. Roz 200 kcal extra: 1 glass milk + 1 banana + peanut butter.']);
+      else if (pct > 0.6) tips.push(['warn','Weight fast badh raha hai, fat bhi aa sakta hai. 100–150 kcal kam karo.']);
+      else tips.push(['good',`+${ch.toFixed(1)} kg is hafte. Lean bulk sahi chal raha hai.`]);
+    }
+  }
+  const s = streak();
+  if (s >= 3) tips.push(['good',`${s} din ka streak. Chain mat todna.`]);
+  tips.push(['','Progressive overload: jab sab sets top reps pe ho jayein, agle hafte 2.5 kg badhao.']);
+  return tips;
+}
+
+/* ================= Views ================= */
+function header(){
+  const n = dayNumber();
+  $('#dayNum').innerHTML = `Day ${n}<small>/ 90</small>`;
+  $('#phase').textContent = phaseOf(n);
+  $('#hello').textContent = S.profile ? `${S.profile.name}'s transformation` : 'Body transformation';
+  $('#dateLbl').textContent = parseKey(viewKey).toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+}
+
+function setupView(){
+  const p = S.profile || {name:'Ashish',age:24,sex:'male',height:172,weight:78,goalWeight:70,goal:'fatloss',activity:'mid',diet:'nonveg',startDate:todayKey()};
+  return `<section>
+  <div class="card">
+    <h2>Setup your coach</h2>
+    <p class="muted" style="margin:0">Ek baar bharo. Iske hisaab se calories, protein, paani aur plan banega. Data sirf is phone/browser mein save hota hai.</p>
+    <form id="setup" class="grid2">
+      <label class="f">Name<input id="p_name" value="${esc(p.name)}" required></label>
+      <label class="f">Age<input id="p_age" type="number" value="${esc(p.age)}" required></label>
+      <label class="f">Height (cm)<input id="p_height" type="number" value="${esc(p.height)}" required></label>
+      <label class="f">Weight now (kg)<input id="p_weight" type="number" step="0.1" value="${esc(p.weight)}" required></label>
+      <label class="f">Goal weight (kg)<input id="p_goalWeight" type="number" step="0.1" value="${esc(p.goalWeight)}"></label>
+      <label class="f">Sex<select id="p_sex"><option value="male">Male</option><option value="female">Female</option></select></label>
+      <label class="f">Goal<select id="p_goal"><option value="fatloss">Fat loss</option><option value="muscle">Muscle gain</option><option value="recomp">Recomp (dono)</option></select></label>
+      <label class="f">Daily activity<select id="p_activity"><option value="low">Low (desk job)</option><option value="mid">Medium (gym 4–6 days)</option><option value="high">High (gym + physical work)</option></select></label>
+      <label class="f">Diet<select id="p_diet"><option value="nonveg">Non-veg</option><option value="egg">Eggitarian</option><option value="veg">Vegetarian</option></select></label>
+      <label class="f">Journey start date<input id="p_startDate" type="date" value="${esc(p.startDate)}"></label>
+      <div style="grid-column:1/-1"><button class="primary" type="submit">Save & start</button></div>
+    </form>
+  </div></section>`;
+}
+
+function todayView(){
+  const t = targets(), d = day(), tot = totals(d), n = dayNumber(), plan = planFor(viewKey);
+  const pct = (a,b) => Math.min(100, b ? a/b*100 : 0);
+  const CH = [['workout', plan === PLAN.rest ? 'Active rest: walk + stretch' : 'Workout complete'],['protein',`Protein ${t.protein} g`],['water',`Water ${t.water} L`],['steps',`${t.steps.toLocaleString('en-IN')} steps`],['sleep','7+ ghante sleep'],['junk','No junk / no cold drink'],['film','Video clip record kiya']];
+  const autoDone = {workout:d.workoutDone, protein:tot.p>=t.protein, water:d.water>=t.water, steps:+d.steps>=t.steps, sleep:+d.sleep>=7};
+  const score = CH.filter(([k]) => autoDone[k] || d.checks[k]).length;
+  return `<section>
+  <div class="row" style="justify-content:space-between">
+    <div class="row"><button class="small" data-shift="-1" aria-label="Previous day">‹ Prev</button><button class="small" data-shift="1" aria-label="Next day">Next ›</button>${viewKey!==todayKey()?'<button class="small" data-shift="0">Today</button>':''}</div>
+    <span class="pill ${score>=6?'good':score>=4?'warn':''}">Day score ${score}/${CH.length}</span>
+  </div>
+  <div class="card coach">
+    <div class="label">Line of the day</div>
+    <div class="quote">“${esc(lineFor(n))}”</div>
+  </div>
+  <div class="grid4">
+    <div class="stat"><span class="label">Calories</span><span class="v">${r0(tot.kcal)}</span><span class="muted" style="font-size:12px">of ${t.kcal}</span><div class="bar"><i style="width:${pct(tot.kcal,t.kcal)}%"></i></div></div>
+    <div class="stat"><span class="label">Protein</span><span class="v">${r0(tot.p)}g</span><span class="muted" style="font-size:12px">of ${t.protein} g</span><div class="bar"><i style="width:${pct(tot.p,t.protein)}%"></i></div></div>
+    <div class="stat"><span class="label">Water</span><span class="v">${d.water}L</span><span class="muted" style="font-size:12px">of ${t.water} L</span><div class="bar"><i style="width:${pct(d.water,t.water)}%"></i></div></div>
+    <div class="stat"><span class="label">Streak</span><span class="v">${streak()}</span><span class="muted" style="font-size:12px">days in a row</span></div>
+  </div>
+  <div class="card">
+    <h3>Log today</h3>
+    <div class="grid2">
+      <label class="f">Morning weight (kg)<input id="d_weight" type="number" step="0.1" inputmode="decimal" value="${esc(d.weight)}" placeholder="e.g. 77.6"></label>
+      <label class="f">Steps<input id="d_steps" type="number" inputmode="numeric" value="${esc(d.steps)}" placeholder="e.g. 8500"></label>
+      <label class="f">Sleep last night (hrs)<input id="d_sleep" type="number" step="0.5" inputmode="decimal" value="${esc(d.sleep)}" placeholder="e.g. 7.5"></label>
+      <div class="f" style="display:grid;gap:4px"><span class="label" style="text-transform:none;letter-spacing:0;font-size:13px;font-weight:500">Water</span>
+        <div class="row"><button class="small" id="w_minus">− 0.25 L</button><span class="num" style="font-size:22px;font-weight:700">${d.water} L</span><button class="small primary" id="w_plus">+ 0.25 L</button></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Daily checklist</h3>
+    <div class="checks">${CH.map(([k,l]) => { const on = autoDone[k] || d.checks[k]; return `<label class="check ${on?'done':''}"><input type="checkbox" id="c_${k}" data-check="${k}" ${on?'checked':''}><span>${esc(l)}</span></label>`; }).join('')}</div>
+  </div>
+  <div class="card coach">
+    <h3>Coach says</h3>
+    <ul>${coachTips().map(([c,m]) => `<li>${c?`<span class="pill ${c}">${c==='good'?'Good':c==='bad'?'Fix':'Do'}</span> `:''}${esc(m)}</li>`).join('')}</ul>
+  </div>
+  </section>`;
+}
+
+function workoutView(){
+  const d = day(), plan = planFor(viewKey);
+  const week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((n,i) => `<tr><td>${n}</td><td>${esc(PLAN[WEEK[i]].name)}</td></tr>`).join('');
+  return `<section>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h2>${esc(plan.name)}</h2>${d.workoutDone?'<span class="pill good">Done</span>':'<span class="pill warn">Pending</span>'}</div>
+    <h3 style="color:var(--plate)">Warm-up · 10 min</h3>
+    <ol style="margin:0;padding-left:20px;display:grid;gap:2px">${WARMUP.map(w=>`<li>${esc(w)}</li>`).join('')}</ol>
+  </div>
+  <div class="card">
+    <h3>Main workout</h3>
+    <p class="muted" style="margin:0;font-size:13px">Har set ke baad circle tap karo. Rest 60–90 sec, heavy lifts pe 2 min.</p>
+    <div>${plan.ex.map(([name,sets,reps],i) => {
+      const done = d.sets[i] || 0;
+      return `<div class="ex"><div><div class="name">${esc(name)}</div><div class="muted" style="font-size:13px">${sets} × ${esc(reps)}</div></div>
+        <div class="sets">${Array.from({length:sets},(_,j)=>`<button class="set ${j<done?'on':''}" data-ex="${i}" data-set="${j+1}" aria-label="${esc(name)} set ${j+1}">${j+1}</button>`).join('')}</div></div>`;
+    }).join('')}</div>
+    <button class="primary" id="wDone">${d.workoutDone?'Mark as not done':'Workout complete ✓'}</button>
+  </div>
+  <div class="card">
+    <h3>Weekly split</h3>
+    <div class="scroll"><table><tbody>${week}</tbody></table></div>
+    <p class="muted" style="margin:0;font-size:13px">Beginner rule: form pehle, weight baad mein. Last 1–2 reps tough hone chahiye, par form nahi tootna chahiye.</p>
+  </div></section>`;
+}
+
+function foodView(){
+  const d = day(), t = targets(), tot = totals(d);
+  return `<section>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h2>Meals</h2><span class="num" style="font-size:18px">${r0(tot.kcal)} / ${t.kcal} kcal · ${r0(tot.p)} / ${t.protein} g protein</span></div>
+    <form id="addFood" class="grid2">
+      <label class="f" style="grid-column:1/-1">Food<select id="f_food">${FOODS.map((f,i)=>`<option value="${i}">${esc(f[0])} — ${f[1]} kcal, ${f[2]} g P</option>`).join('')}</select></label>
+      <label class="f">Servings<input id="f_qty" type="number" step="0.5" min="0.5" value="1"></label>
+      <div style="align-self:end"><button class="primary" type="submit" style="width:100%">Add</button></div>
+    </form>
+    <details><summary class="muted" style="cursor:pointer">Food list mein nahi hai? Custom add karo</summary>
+      <form id="addCustom" class="grid2" style="margin-top:8px">
+        <label class="f" style="grid-column:1/-1">Name<input id="cf_name" placeholder="e.g. Mom's aloo paratha" required></label>
+        <label class="f">Calories<input id="cf_kcal" type="number" required></label>
+        <label class="f">Protein (g)<input id="cf_p" type="number" step="0.5" required></label>
+        <div style="grid-column:1/-1"><button type="submit">Add custom</button></div>
+      </form></details>
+    <div>${d.meals.length ? d.meals.map((m,i)=>`<div class="meal"><div><div>${esc(m.name)}${m.qty!==1?` × ${m.qty}`:''}</div><div class="muted" style="font-size:13px">${r0(m.kcal*m.qty)} kcal · ${Math.round(m.p*m.qty*10)/10} g protein</div></div><button class="small" data-del="${i}" aria-label="Remove ${esc(m.name)}">Remove</button></div>`).join('') : '<p class="muted" style="margin:0">Abhi kuch log nahi kiya. Har meal ke baad 10 second mein add karo.</p>'}</div>
+  </div>
+  <div class="card">
+    <h3>Sample day · ${esc({veg:'Vegetarian',egg:'Eggitarian',nonveg:'Non-veg'}[S.profile.diet])}</h3>
+    ${sampleDay()}
+  </div></section>`;
+}
+function sampleDay(){
+  const diet = S.profile.diet;
+  const plan = {
+    veg:[['Breakfast','Oats 50 g + milk + 1 banana'],['Lunch','2 roti + dal + sabzi + salad + curd'],['Pre-workout','Banana + black coffee'],['Post-workout','1 scoop whey (ya 100 g paneer)'],['Dinner','Soya chunks 50 g sabzi + 2 roti + salad']],
+    egg:[['Breakfast','3 whole eggs + 2 whites + 2 bread'],['Lunch','Rice + dal + sabzi + curd + salad'],['Pre-workout','Banana + black coffee'],['Post-workout','1 scoop whey + 1 fruit'],['Dinner','Paneer 100 g bhurji + 2 roti + salad']],
+    nonveg:[['Breakfast','3 whole eggs + 2 roti / bread'],['Lunch','Chicken 150 g + rice 1 katori + salad'],['Pre-workout','Banana + black coffee'],['Post-workout','1 scoop whey + 1 fruit'],['Dinner','Dal + 2 roti + sabzi + curd']]
+  }[diet];
+  return `<div class="scroll"><table><tbody>${plan.map(([a,b])=>`<tr><th scope="row">${a}</th><td>${esc(b)}</td></tr>`).join('')}</tbody></table></div>
+  <p class="muted" style="margin:0;font-size:13px">Portion target ke hisaab se kam-zyada karo. Roz ek hi jaisa khana = easy tracking.</p>`;
+}
+
+function progressView(){
+  const ks = Object.keys(S.days).filter(k => +S.days[k].weight > 0).sort();
+  const pts = ks.map(k => [k, +S.days[k].weight]);
+  const p = S.profile, start = pts.length ? pts[0][1] : +p.weight, now = pts.length ? pts[pts.length-1][1] : +p.weight;
+  const togo = p.goalWeight ? Math.abs(now - p.goalWeight) : null;
+  const wins = Object.keys(S.days).filter(isWin).length;
+  const rows = Object.keys(S.days).sort().reverse().slice(0,21).map(k => { const d = S.days[k], tt = totals(d);
+    return `<tr><td>${esc(k.slice(5))}</td><td>${d.weight||'–'}</td><td>${d.meals.length?r0(tt.kcal):'–'}</td><td>${d.meals.length?r0(tt.p):'–'}</td><td>${d.workoutDone?'✓':'–'}</td><td>${d.steps||'–'}</td></tr>`; }).join('');
+  return `<section>
+  <div class="grid4">
+    <div class="stat"><span class="label">Start</span><span class="v">${start}</span><span class="muted" style="font-size:12px">kg</span></div>
+    <div class="stat"><span class="label">Now</span><span class="v">${now}</span><span class="muted" style="font-size:12px">kg</span></div>
+    <div class="stat"><span class="label">Change</span><span class="v" style="color:${now<=start?'var(--good)':'var(--plate)'}">${(now-start>0?'+':'')}${(now-start).toFixed(1)}</span><span class="muted" style="font-size:12px">kg</span></div>
+    <div class="stat"><span class="label">To goal</span><span class="v">${togo!==null?togo.toFixed(1):'–'}</span><span class="muted" style="font-size:12px">kg · ${wins} workout days</span></div>
+  </div>
+  <div class="card chart"><h3>Weight trend</h3>${chart(pts)}</div>
+  <div class="card"><h3>Last 3 weeks</h3>
+    ${rows ? `<div class="scroll"><table><thead><tr><th>Date</th><th>Kg</th><th>Kcal</th><th>Prot</th><th>Gym</th><th>Steps</th></tr></thead><tbody>${rows}</tbody></table></div>` : '<p class="muted" style="margin:0">Abhi koi log nahi. Today tab se shuru karo.</p>'}
+  </div>
+  <div class="card"><h3>Backup</h3>
+    <p class="muted" style="margin:0;font-size:13px">Data sirf is browser mein hai. Har Sunday backup copy karke WhatsApp "Message yourself" mein save kar lo. Naye phone pe paste karke restore karo.</p>
+    <div class="row"><button id="bkCopy">Copy backup</button><button id="bkShow">Restore from backup</button><button id="editProfile">Edit profile</button></div>
+    <div id="bkArea" hidden><textarea id="bkText" placeholder="Backup text yaha paste karo"></textarea><div class="row" style="margin-top:8px"><button class="primary" id="bkRestore">Restore</button></div></div>
+  </div></section>`;
+}
+function chart(pts){
+  if (pts.length < 2) return '<p class="muted" style="margin:0">2 din ka weight log karo, graph yaha dikhega.</p>';
+  const W=640,H=220,L=40,R=16,T=14,B=28;
+  const ws = pts.map(p=>p[1]), gw = +S.profile.goalWeight || null;
+  let lo = Math.min(...ws, gw ?? Infinity), hi = Math.max(...ws, gw ?? -Infinity);
+  lo = Math.floor(lo-0.5); hi = Math.ceil(hi+0.5);
+  const d0 = parseKey(pts[0][0]), span = Math.max(1, daysBetween(pts[0][0], pts[pts.length-1][0]));
+  const x = k => L + (daysBetween(pts[0][0],k)/span)*(W-L-R), y = w => T + (hi-w)/(hi-lo)*(H-T-B);
+  const ticks = []; const step = Math.max(1, Math.ceil((hi-lo)/4));
+  for (let v=lo; v<=hi; v+=step) ticks.push(v);
+  const line = pts.map((p,i)=>`${i?'L':'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
+  const area = `${line}L${x(pts[pts.length-1][0]).toFixed(1)},${H-B}L${L},${H-B}Z`;
+  const last = pts[pts.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weight trend from ${pts[0][1]} to ${last[1]} kg">
+    ${ticks.map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('')}
+    ${gw?`<line x1="${L}" x2="${W-R}" y1="${y(gw)}" y2="${y(gw)}" stroke="var(--good)" stroke-dasharray="5 4" stroke-width="1.5"/><text x="${W-R}" y="${y(gw)-5}" text-anchor="end" style="fill:var(--good)">Goal ${gw}</text>`:''}
+    <path d="${area}" fill="var(--accent)" fill-opacity=".12"/>
+    <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="${x(last[0])}" cy="${y(last[1])}" r="5" fill="var(--accent)"/>
+    <text x="${L}" y="${H-8}">${d0.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</text>
+    <text x="${W-R}" y="${H-8}" text-anchor="end">${parseKey(last[0]).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</text>
+  </svg>`;
+}
+
+function journeyView(){
+  const d = day(), n = dayNumber(), plan = planFor(viewKey), tot = totals(d), t = targets();
+  const start = +S.profile.weight, w = +d.weight || latestWeight() || start;
+  const diff = (w - start).toFixed(1);
+  const title = `Day ${n} of 90 | ${plan.name.split(' —')[0]} Day | My Body Transformation Journey`;
+  const desc = `Day ${n}/90 of my body transformation 💪
+${plan === PLAN.rest ? 'Aaj active rest day tha — walk + stretching.' : `Aaj ka workout: ${plan.name}. Warm-up se start, fir ${plan.ex.slice(0,3).map(e=>e[0]).join(', ')}.`}
+
+📊 Today's stats
+• Weight: ${w} kg (${diff>0?'+':''}${diff} kg since Day 1)
+• Protein: ${r0(tot.p)} g / ${t.protein} g
+• Streak: ${streak()} days
+
+"${lineFor(n)}"
+${d.note ? `\nAaj ki baat: ${d.note}\n` : ''}
+Comment karo: kal ke video mein kya dekhna chahte ho? Diet, full workout ya meri mistakes?
+Subscribe karo aur journey mein saath chalo. Roz naya video.
+
+#bodytransformation #gymmotivation #fitnessjourney #day${n} #hindifitness #gymlife #shorts`;
+  const script = `SHORT SCRIPT (30–45 sec)
+0–3 s  HOOK: "Day ${n}. ${n===1?'Aaj se sab badlega.':`${Math.abs(diff)} kg ${diff<=0?'kam':'upar'} ho chuka hai.`}"
+3–10 s  Warm-up clip (fast cut, 3 shots)
+10–30 s  Main lift: ${plan.ex[0][0]} — 1 heavy set, side angle
+30–40 s  Face to camera: "${lineFor(n)}"
+40–45 s  CTA: "Kal Day ${n+1}. Comment mein batao kya dekhna hai."`;
+  return `<section>
+  <div class="card">
+    <h2>Journey diary · Day ${n}</h2>
+    <label class="f">Aaj kaisa feel hua? Kya seekha? (video ke liye bhi use hoga)<textarea id="d_note" placeholder="e.g. Aaj bench pe 40 kg 8 reps. Pehli baar pull-up try kiya.">${esc(d.note)}</textarea></label>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>YouTube kit</h3><span class="pill">Auto-filled from your logs</span></div>
+    <div class="label">Title</div><pre class="out" id="yt_title">${esc(title)}</pre>
+    <button class="small" data-copy="yt_title">Copy title</button>
+    <div class="label">Description + hashtags</div><pre class="out" id="yt_desc">${esc(desc)}</pre>
+    <button class="small" data-copy="yt_desc">Copy description</button>
+    <div class="label">Shorts script</div><pre class="out" id="yt_script">${esc(script)}</pre>
+    <button class="small" data-copy="yt_script">Copy script</button>
+  </div>
+  <div class="card">
+    <h3>Channel growth rules</h3>
+    <ul style="margin:0;padding-left:18px;display:grid;gap:6px">
+      <li>Roz ek Short (same time), hafte mein ek 6–10 min "Week N update" long video.</li>
+      <li>Pehle 2 second mein hook: Day number + result ya struggle. Intro mat lagao.</li>
+      <li>Thumbnail: same layout har baar, bada "DAY ${n}" text, tumhara face.</li>
+      <li>Har comment ka reply pehle 1 ghante mein. Achhe sawaal pe agla video banao.</li>
+      <li>Har 30 din: side-by-side before/after. Yahi video sabse zyada chalega.</li>
+      <li>Kamai: 1000 subs + 4000 watch hours (ya 10M Shorts views in 90 days) ke baad YouTube Partner Program. Uske pehle affiliate links (supplements, gear) description mein.</li>
+    </ul>
+  </div></section>`;
+}
+
+/* ================= Render & events ================= */
+function render(){
+  header();
+  const v = $('#view');
+  if (!S.profile || tab === 'setup') { v.innerHTML = setupView(); bindSetup(); return; }
+  v.innerHTML = ({today:todayView, workout:workoutView, food:foodView, progress:progressView, journey:journeyView}[tab])();
+  bind();
+}
+function bindSetup(){
+  const p = S.profile;
+  if (p) ['sex','goal','activity','diet'].forEach(k => $('#p_'+k).value = p[k]);
+  $('#setup').addEventListener('submit', e => {
+    e.preventDefault();
+    const g = k => $('#p_'+k).value;
+    S.profile = {name:g('name').trim()||'Ashish',age:+g('age'),sex:g('sex'),height:+g('height'),weight:+g('weight'),goalWeight:+g('goalWeight')||'',goal:g('goal'),activity:g('activity'),diet:g('diet'),startDate:g('startDate')||todayKey()};
+    const d = day(todayKey()); if (!d.weight) d.weight = S.profile.weight;
+    save(); tab = 'today'; render(); toast('Saved. Day 1 starts now.');
+  });
+}
+function bind(){
+  const d = day();
+  document.querySelectorAll('[data-shift]').forEach(b => b.onclick = () => {
+    const s = +b.dataset.shift; if (!s) viewKey = todayKey(); else { const x = parseKey(viewKey); x.setDate(x.getDate()+s); viewKey = keyOf(x); }
+    render();
+  });
+  for (const f of ['weight','steps','sleep']) { const el = $('#d_'+f); if (el) el.onchange = () => { d[f] = el.value; save(); setTimeout(render); }; }
+  const note = $('#d_note'); if (note) note.oninput = () => { d.note = note.value; save(); };
+  if ($('#w_plus')) { $('#w_plus').onclick = () => { d.water = Math.round((d.water+0.25)*100)/100; save(); render(); };
+                      $('#w_minus').onclick = () => { d.water = Math.max(0, Math.round((d.water-0.25)*100)/100); save(); render(); }; }
+  document.querySelectorAll('[data-check]').forEach(c => c.onchange = () => {
+    const k = c.dataset.check; if (k === 'workout') d.workoutDone = c.checked; else d.checks[k] = c.checked;
+    if (k === 'workout' && planFor(viewKey) === PLAN.rest) d.checks.rest = c.checked;
+    save(); render();
+  });
+  document.querySelectorAll('[data-ex]').forEach(b => b.onclick = () => {
+    const i = b.dataset.ex, s = +b.dataset.set; d.sets[i] = (d.sets[i] === s) ? s-1 : s;
+    const plan = planFor(viewKey), all = plan.ex.every(([,sets],j) => (d.sets[j]||0) >= sets);
+    if (all && !d.workoutDone) { d.workoutDone = true; toast('Workout complete. Protein time.'); }
+    save(); render();
+  });
+  if ($('#wDone')) $('#wDone').onclick = () => { d.workoutDone = !d.workoutDone; if (planFor(viewKey) === PLAN.rest) d.checks.rest = d.workoutDone; save(); render(); };
+  if ($('#addFood')) {
+    $('#addFood').onsubmit = e => { e.preventDefault(); const f = FOODS[+$('#f_food').value]; d.meals.push({name:f[0],kcal:f[1],p:f[2],qty:+$('#f_qty').value||1}); save(); render(); toast('Added'); };
+    $('#addCustom').onsubmit = e => { e.preventDefault(); d.meals.push({name:$('#cf_name').value.trim(),kcal:+$('#cf_kcal').value,p:+$('#cf_p').value,qty:1}); save(); render(); toast('Added'); };
+  }
+  document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { d.meals.splice(+b.dataset.del,1); save(); render(); });
+  document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copyText($('#'+b.dataset.copy).textContent, $('#'+b.dataset.copy)));
+  if ($('#bkCopy')) {
+    $('#bkCopy').onclick = () => { $('#bkArea').hidden = false; $('#bkText').value = JSON.stringify(S); copyText(JSON.stringify(S), $('#bkText')); };
+    $('#bkShow').onclick = () => { $('#bkArea').hidden = false; $('#bkText').value = ''; $('#bkText').focus(); };
+    $('#bkRestore').onclick = () => {
+      try { const x = JSON.parse($('#bkText').value); if (!x.days) throw 0; S = x; save(); render(); toast('Restored'); }
+      catch(e) { toast('Backup text sahi nahi hai. Poora text paste karo.'); }
+    };
+    $('#editProfile').onclick = () => { tab = 'setup'; render(); };
+  }
+}
+function copyText(txt, el){
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); if (el.select) el.select(); else { const s = getSelection(); s.removeAllRanges(); s.addRange(r); } toast('Selected. Ab copy karo.'); };
+  try { navigator.clipboard.writeText(txt).then(() => toast('Copied'), fallback); } catch(e) { fallback(); }
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.tab; render(); scrollTo(0,0); });
+try { const h = location.hash.slice(1); if (['today','workout','food','progress','journey'].includes(h)) tab = h; } catch(e) {}
+render();
+</script>
