@@ -6,23 +6,17 @@ Open `coach/index.html` in a phone or laptop browser.
 
 ## What it does
 
-- **Today**: day number (Day N / 90), a motivation line of the day, calorie, protein and water targets, a daily log (weight, steps, sleep, water), a 7-point checklist and a rule-based coach that gives tips based on what you logged.
-- **Workout**: a Push / Pull / Legs split with Sunday as active rest, a 10-minute warm-up, and set-by-set tracking.
-- **Food**: an Indian food list (roti, dal, paneer, eggs, chicken, soya, whey and more) with calories and protein, custom food entries, and a sample day for veg, egg or non-veg diets.
-- **Progress**: a weight trend chart with a goal line, a 3-week history and a copy/paste backup.
-- **Journey**: a daily diary plus an auto-filled YouTube kit (title, description with hashtags, and a Shorts script) built from your logs.
+- **Home**: rings for calories, protein and water, today's workout, the daily progress photo, quick log, checklist and coach tips.
+- **Workout**: warm-up, set-by-set tracking, calendar reminder and the next 7 days.
+- **Coach** (center button): one chat agent that manages everything. It is rule-based, so there is no AI cost. It understands Hinglish, English and Hindi:
+  - food: `2 roti dal aur 100g paneer khaya`, `3 ande aur 1 glass doodh`
+  - water, weight, steps, sleep: `1 litre paani piya`, `weight 77.4`, `8500 steps`, `7 ghante soya`
+  - workout: `workout ho gaya`, `aaj kya workout hai`
+  - schedule: `aaj gym nahi ja paunga`, `kal shaam 7 baje`, `Monday ka workout Tuesday ko`, `har din subah 6 baje`
+  - `status`, `aaj kya khau`, `photo add karo`, `undo`
+- **Food**: calorie and protein bars, an Indian food list, custom food and a sample day.
+- **Progress**: a photo gallery (one photo per day, Day 1 vs latest before/after), weight chart, YouTube kit (title, description, Shorts script) and data backup.
+
+Photos are compressed and stored in the browser (IndexedDB). Logs are stored in localStorage. Keep the original photos in your phone gallery too.
 
 Targets use the Mifflin-St Jeor formula: fat loss is about −450 kcal, muscle gain +250 kcal, protein 1.8–2 g per kg.
-
-## Schedule agent (🎤 Agent button, on every screen)
-
-Type or speak a command to move workout days or change the time. It is rule-based, so there is no AI cost. Examples:
-
-- `aaj gym nahi ja paunga`: today becomes rest and every workout moves one day ahead until the next rest day
-- `kal shaam 7 baje`: tomorrow at 7 PM (one time only)
-- `har din subah 6 baje`: 6 AM every day
-- `Monday ka workout Tuesday ko shift karo`: swaps the two days
-- `Sunday ko legs` / `har Friday legs`: sets that day's workout, once or every week
-- `undo`, `schedule reset`
-
-The mic button uses the browser's speech recognition where it is allowed. Where it is blocked, use the phone keyboard's mic key to speak into the box.
