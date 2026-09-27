@@ -13,3 +13,16 @@ Open `coach/index.html` in a phone or laptop browser.
 - **Journey**: a daily diary plus an auto-filled YouTube kit (title, description with hashtags, and a Shorts script) built from your logs.
 
 Targets use the Mifflin-St Jeor formula: fat loss is about −450 kcal, muscle gain +250 kcal, protein 1.8–2 g per kg.
+
+## Schedule agent (Workout tab)
+
+Type or speak a command to move workout days or change the time. It is rule-based, so there is no AI cost. Examples:
+
+- `aaj gym nahi ja paunga`: today becomes rest and every workout moves one day ahead until the next rest day
+- `kal shaam 7 baje`: tomorrow at 7 PM (one time only)
+- `har din subah 6 baje`: 6 AM every day
+- `Monday ka workout Tuesday ko shift karo`: swaps the two days
+- `Sunday ko legs` / `har Friday legs`: sets that day's workout, once or every week
+- `undo`, `schedule reset`
+
+The mic button uses the browser's speech recognition where it is allowed. Where it is blocked, use the phone keyboard's mic key to speak into the box.
