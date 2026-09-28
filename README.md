@@ -20,3 +20,12 @@ Open `coach/index.html` in a phone or laptop browser.
 Photos are compressed and stored in the browser (IndexedDB). Logs are stored in localStorage. Keep the original photos in your phone gallery too.
 
 Targets use the Mifflin-St Jeor formula: fat loss is about −450 kcal, muscle gain +250 kcal, protein 1.8–2 g per kg.
+
+## Install on your phone (free)
+
+1. On GitHub, open this repo → **Settings** → **Pages**.
+2. Under **Build and deployment**, set Source to **Deploy from a branch**, pick the branch that has this code (`main` after merging, or `claude/personal-trainer-lifestyle-agent-mzmr2s`) and folder **/ (root)**, then **Save**.
+3. After 1–2 minutes the app is live at https://ashishshukla2000.github.io/Ashish-Shukla-/
+4. Open that link in **Chrome** (Android) and tap **⋮ → Add to Home screen → Install**. On iPhone use **Safari → Share → Add to Home Screen**.
+
+It then opens full screen like a normal app, works offline, and the mic button works for voice commands.
